@@ -30,7 +30,7 @@
 #import "TDReplicatorManager.h"
 #import "TDReplicator.h"
 #import "CDTReplicator.h"
-
+#import "CDTLogging.h"
 @interface ReplicationAcceptance ()
 
 /** This database is used as the primary remote database. Some tests create further
@@ -403,13 +403,26 @@ static NSUInteger largeRevTreeSize = 1500;
     
 }
 
+//-(void) testSyncReplicationErrorsWhenLocalDatabaseDeleted_pullDelegateDeletes_indefinitely
+//{
+//    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+//    CDTChangeLogLevel(CDTREPLICATION_LOG_CONTEXT, DDLogLevelAll);
+//    int counter = 0;
+//    while(true) {
+//        counter++;
+//        [self testSyncReplicationErrorsWhenLocalDatabaseDeleted_pullDelegateDeletes];
+//        [self tearDown];
+//        [NSThread sleepForTimeInterval:5.0f];
+//        [self setUp];
+//    }
+//}
+
 
 -(void) testSyncReplicationErrorsWhenLocalDatabaseDeleted_pullDelegateDeletes
 {
     [self createLocalDocs:5000];
     [self createRemoteDocs:5000 suffixFrom:5000];
-    
-    
+
     CDTPullReplication *pull = [CDTPullReplication replicationWithSource:self.primaryRemoteDatabaseURL
                                                                   target:self.datastore];
     CDTReplicator *pullReplicator =  [self.replicatorFactory oneWay:pull error:nil];
